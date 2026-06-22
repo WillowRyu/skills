@@ -27,10 +27,10 @@ Each skill ships as its own installable plugin under `plugins/`.
    mv plugins/<name>/skills/skill-name plugins/<name>/skills/<name>
    ```
 2. Edit `plugins/<name>/skills/<name>/SKILL.md` — set `name:` and `description:` (include trigger phrasing) and write the body.
-3. Edit `plugins/<name>/.claude-plugin/plugin.json` — set `name`, `description`, and the `skills` path (`./skills/<name>`).
+3. Edit `plugins/<name>/.claude-plugin/plugin.json` — set `name`, `description`, the `homepage` path, and the `skills` path (`./skills/<name>`).
 4. Register it in `.claude-plugin/marketplace.json` under `plugins`:
    ```json
-   { "name": "<name>", "description": "<one-line>", "source": "./plugins/<name>" }
+   { "name": "<name>", "description": "<one-line>", "category": "<category>", "source": "./plugins/<name>" }
    ```
 5. Commit and push. Users get it with `/plugin install <name>@willow` (or `/plugin update`).
 
