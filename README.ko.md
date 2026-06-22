@@ -47,12 +47,12 @@
 **켜고 / 끄기:**
 
 ```
-/study-coding-mode:toggle on        # 시작
-/study-coding-mode:toggle off       # 종료
-/study-coding-mode:toggle status    # 상태 확인
+/study-coding-mode:toggle            # 켜기 / 끄기 토글
+/study-coding-mode:toggle junior     # 레벨 지정해서 켜기: junior | mid | senior
+/study-coding-mode:toggle status     # 상태 확인
 ```
 
-…또는 그냥 *"스터디 코딩 모드"* / *"학습하면서 만들자, 내가 칠게"* 처럼 말로 해도 됩니다. 명시적인 **지속 모드**라서 `UserPromptSubmit` 훅이 매 턴 모드를 다시 주입합니다 — 긴 세션이나 컨텍스트 요약(compaction)에도 끄기 전까지 유지됩니다.
+…또는 그냥 *"스터디 코딩 모드"* / *"학습하면서 만들자, 내가 칠게"* 처럼 말로 해도 됩니다. **티칭 레벨**을 고르세요 — `junior`(기본; 모든 용어를 쉬운 정의 + 비유로 풀어줌), `mid`, `senior` — 시작할 때나 도중에 그냥 말로 바꿀 수 있습니다 (*"더 쉽게 설명해줘"*, *"시니어로 바꿔줘"*). 명시적인 **지속 모드**라서 `UserPromptSubmit` 훅이 매 턴 모드를 다시 주입합니다 — 긴 세션이나 컨텍스트 요약(compaction)에도 끄기 전까지 유지됩니다.
 
 ## 새 스킬 추가하기
 

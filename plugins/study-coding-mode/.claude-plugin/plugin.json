@@ -1,7 +1,7 @@
 {
   "name": "study-coding-mode",
-  "version": "0.1.1",
-  "description": "Learn-by-typing tutor mode: the AI explains the why and hands you one small step at a time to type yourself, verifies your code, and proactively teaches the architecture, patterns, and terms — as a persistent on/off mode.",
+  "version": "0.2.0",
+  "description": "Learn-by-typing tutor mode: the AI explains the why and hands you one small step at a time to type yourself, verifies your code, and proactively teaches the architecture, patterns, and terms — as a persistent on/off mode. Junior/mid/senior teaching levels control how much jargon gets unpacked.",
   "keywords": [
     "study",
     "learning",

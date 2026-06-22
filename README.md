@@ -47,12 +47,12 @@ A **learn-by-typing tutor mode.** Instead of writing the optimal code *for* you,
 **Turn it on / off:**
 
 ```
-/study-coding-mode:toggle on        # start
-/study-coding-mode:toggle off       # stop
-/study-coding-mode:toggle status    # check
+/study-coding-mode:toggle            # flip on / off
+/study-coding-mode:toggle junior     # turn on at a level: junior | mid | senior
+/study-coding-mode:toggle status     # check
 ```
 
-…or just say *"study coding mode"* / *"teach me as we build, I'll type it"* in your own words. It's an explicit, **persistent mode** — a `UserPromptSubmit` hook re-asserts it every turn, so it survives long sessions and context compaction until you turn it off.
+…or just say *"study coding mode"* / *"teach me as we build, I'll type it"* in your own words. Pick a **teaching level** — `junior` (default; unpacks every term with a plain definition + analogy), `mid`, or `senior` — at the start or anytime by just asking (*"explain this more simply"*, *"switch to senior"*). It's an explicit, **persistent mode** — a `UserPromptSubmit` hook re-asserts it every turn, so it survives long sessions and context compaction until you turn it off.
 
 ## Adding a new skill
 

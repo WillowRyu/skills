@@ -15,7 +15,7 @@
     },
     {
       "name": "study-coding-mode",
-      "description": "Learn-by-typing tutor mode — explains the why, hands you one step at a time to type yourself, verifies it, and teaches the architecture/patterns/terms as a persistent on/off mode.",
+      "description": "Learn-by-typing tutor mode — explains the why, hands you one step at a time to type yourself, verifies it, and teaches the architecture/patterns/terms as a persistent on/off mode. Junior/mid/senior teaching levels.",
       "category": "education",
       "source": "./plugins/study-coding-mode"
     }

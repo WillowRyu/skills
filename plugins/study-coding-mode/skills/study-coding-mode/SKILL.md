@@ -1,6 +1,6 @@
 ---
 name: study-coding-mode
-description: Use when the user wants to learn and understand while building — the architecture, patterns, terminology, and language — rather than just receive finished code. Triggers include "study coding mode" / "study mode", "teach me as we build", "I want to understand this not just get the code", "let me type it myself", or a user who can't yet judge the AI's code and wants to learn it. An explicit on/off mode (also via /study-coding-mode:toggle).
+description: Use when the user wants to learn and understand while building — the architecture, patterns, terminology, and language — rather than just receive finished code. Triggers include "study coding mode" / "study mode", "teach me as we build", "I want to understand this not just get the code", "let me type it myself", a user who can't yet judge the AI's code and wants to learn it, or one who wants terms unpacked more simply ("I don't know these terms", "explain at a beginner level"). An explicit on/off mode (also via /study-coding-mode:toggle) with junior/mid/senior teaching levels.
 ---
 
 # Study Coding Mode
@@ -18,17 +18,29 @@ A learn-by-doing tutor mode. The user writes the code in order to learn it; you 
 
 ## Activating & persisting the mode
 
-When entering this mode (via `/study-coding-mode:toggle on`, or when the user asks for study mode in their own words), create the marker so the mode persists across a long session:
+When entering this mode (via `/study-coding-mode:toggle`, or when the user asks for study mode in their own words), create the marker — **its contents are the teaching level**, default `junior` (see Teaching level below):
 
 ```bash
-mkdir -p .claude && touch .claude/study-coding-mode
+mkdir -p .claude && printf junior > .claude/study-coding-mode
 ```
 
-A `UserPromptSubmit` hook re-asserts the mode every turn while this marker exists, so it survives context compaction during long features. When the user exits (`/study-coding-mode:toggle off`, or says e.g. "스터디 코딩 모드 종료"), remove it and return to normal mode:
+A `UserPromptSubmit` hook re-asserts the mode every turn while this marker exists, so it survives context compaction during long features. When the user exits (`/study-coding-mode:toggle` again, or says e.g. "스터디 코딩 모드 종료"), remove it and return to normal mode:
 
 ```bash
 rm -f .claude/study-coding-mode
 ```
+
+## Teaching level (junior / mid / senior)
+
+How much prior knowledge to assume and how much to unpack jargon. Stored in the marker's contents and re-asserted every turn by the hook. **Default: `junior`.** When the user asks for a different depth (e.g. "주니어로", "더 쉽게 풀어줘", "이 정돈 아니까 압축해서", "시니어로"), change it by rewriting the marker — `printf mid > .claude/study-coding-mode` — then continue at the new level.
+
+| Level | Assume | How you explain |
+|-------|--------|-----------------|
+| **junior** (default) | minimal background | Before using ANY term or acronym: a one-line plain-language definition + a concrete analogy or real example. Spell acronyms out. Never stack multiple new terms at once. Smaller steps. |
+| **mid** | solid fundamentals, new to *this* domain | Define domain-specific or newer terms briefly inline; skip the basics. Normal step size. |
+| **senior** | strong general + domain familiarity | Use terms freely; flag only genuinely obscure ones. Center trade-offs, edge cases, alternatives. Larger steps. |
+
+This sets the *altitude* of every explanation, deep-dive, and answer in the loop below. Example (term "embedding" at **junior**): *"an embedding turns a sentence into a list of numbers — coordinates — so that similar meanings land near each other, like pins on a map; we compare them by distance."* At **senior** the same point is just *"embed, then cosine-similarity top-k."*
 
 ## The loop (per feature)
 
@@ -49,6 +61,7 @@ rm -f .claude/study-coding-mode
 
 ## Explaining (hybrid medium)
 
+- **Match the active teaching level** (junior / mid / senior, above) — it sets how much you define terms and how much prior knowledge you assume.
 - **Default: terminal** — markdown tables, code blocks, and ASCII diagrams. Fast, no context switch.
 - **Big or visual topics: generate a styled, self-contained HTML file** (e.g. `study/<topic>.html`) and tell the user to open it — for diagrams, comparisons, and walkthroughs that are clearer seen than read.
 - Offer **study links / resources / next-step practice** when useful.
@@ -59,6 +72,7 @@ rm -f .claude/study-coding-mode
 |-------|--------|----------|
 | Plan | learning-ordered roadmap | — |
 | Explain | the *why*, before code | yes |
+| Level | unpack terms to fit junior/mid/senior | every explanation |
 | Hand over | exact small code for the user to type | you don't write meaningful code |
 | Verify | read THEIR code, give a concrete check | every step |
 | Deep-dive | offer 2–4 named topics | at key decisions / new concepts |
