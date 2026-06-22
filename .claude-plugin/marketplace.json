@@ -12,6 +12,12 @@
       "description": "Strict 3-stage handoff workflow (plan → execute → verify) for coding agents.",
       "category": "workflow",
       "source": { "source": "github", "repo": "WillowRyu/agent-handoff" }
+    },
+    {
+      "name": "study-coding-mode",
+      "description": "Learn-by-typing tutor mode — explains the why, hands you one step at a time to type yourself, verifies it, and teaches the architecture/patterns/terms as a persistent on/off mode.",
+      "category": "education",
+      "source": "./plugins/study-coding-mode"
     }
   ]
 }
