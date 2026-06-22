@@ -1,6 +1,6 @@
 {
   "name": "study-coding-mode",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Learn-by-typing tutor mode: the AI explains the why and hands you one small step at a time to type yourself, verifies your code, and proactively teaches the architecture, patterns, and terms — as a persistent on/off mode.",
   "keywords": [
     "study",

@@ -25,7 +25,7 @@ process.stdin.on('end', () => {
             'At key decisions or first-time concepts, proactively offer 2-4 named deep-dive topics.',
             'Answer any question richly — terminal tables/code by default, a styled HTML file for big or visual topics.',
             'If the user is impatient, offer to condense or to exit the mode — do not silently take over the code.',
-            'Exit when the user runs `/study-coding-mode off` or says exit: remove .claude/study-coding-mode.'
+            'Exit when the user runs `/study-coding-mode:toggle off` or says exit: remove .claude/study-coding-mode.'
           ].join(' ')
         }
       }));

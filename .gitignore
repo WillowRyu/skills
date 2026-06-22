@@ -6,3 +6,6 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# Claude Code local state (plugin enablement, study-coding-mode marker)
+.claude/

@@ -14,7 +14,7 @@ A personal [Claude Code](https://claude.com/claude-code) plugin marketplace — 
 | Plugin | Description | Source |
 |--------|-------------|--------|
 | `agent-handoff` | Strict 3-stage handoff workflow (plan → execute → verify) for coding agents. | [WillowRyu/agent-handoff](https://github.com/WillowRyu/agent-handoff) |
-| `study-coding-mode` | Learn-by-typing tutor mode: explains the *why*, hands you one step at a time to type yourself, verifies it, and teaches architecture/patterns/terms as you go. Persistent on/off mode (`/study-coding-mode`). | this repo · `plugins/study-coding-mode` |
+| `study-coding-mode` | Learn-by-typing tutor mode: explains the *why*, hands you one step at a time to type yourself, verifies it, and teaches architecture/patterns/terms as you go. Persistent on/off mode (`/study-coding-mode:toggle`). | this repo · `plugins/study-coding-mode` |
 
 > `agent-handoff` lives in its own repo and is included here by reference. Install it with `/plugin install agent-handoff@willow`.
 

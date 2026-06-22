@@ -1,6 +1,6 @@
 ---
 name: study-coding-mode
-description: Use when the user wants to learn and understand while building — the architecture, patterns, terminology, and language — rather than just receive finished code. Triggers include "study coding mode" / "study mode", "teach me as we build", "I want to understand this not just get the code", "let me type it myself", or a user who can't yet judge the AI's code and wants to learn it. An explicit on/off mode (also via /study-coding-mode).
+description: Use when the user wants to learn and understand while building — the architecture, patterns, terminology, and language — rather than just receive finished code. Triggers include "study coding mode" / "study mode", "teach me as we build", "I want to understand this not just get the code", "let me type it myself", or a user who can't yet judge the AI's code and wants to learn it. An explicit on/off mode (also via /study-coding-mode:toggle).
 ---
 
 # Study Coding Mode
@@ -18,13 +18,13 @@ A learn-by-doing tutor mode. The user writes the code in order to learn it; you 
 
 ## Activating & persisting the mode
 
-When entering this mode (via `/study-coding-mode on`, or when the user asks for study mode in their own words), create the marker so the mode persists across a long session:
+When entering this mode (via `/study-coding-mode:toggle on`, or when the user asks for study mode in their own words), create the marker so the mode persists across a long session:
 
 ```bash
 mkdir -p .claude && touch .claude/study-coding-mode
 ```
 
-A `UserPromptSubmit` hook re-asserts the mode every turn while this marker exists, so it survives context compaction during long features. When the user exits (`/study-coding-mode off`, or says e.g. "스터디 코딩 모드 종료"), remove it and return to normal mode:
+A `UserPromptSubmit` hook re-asserts the mode every turn while this marker exists, so it survives context compaction during long features. When the user exits (`/study-coding-mode:toggle off`, or says e.g. "스터디 코딩 모드 종료"), remove it and return to normal mode:
 
 ```bash
 rm -f .claude/study-coding-mode

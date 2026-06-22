@@ -1,5 +1,5 @@
 ---
-description: Toggle study coding mode (learn-by-typing tutor mode) on or off
+description: Toggle study coding mode — on | off | status
 argument-hint: on | off | status
 disable-model-invocation: true
 allowed-tools: Bash(mkdir:*), Bash(touch:*), Bash(rm:*), Bash(test:*)
