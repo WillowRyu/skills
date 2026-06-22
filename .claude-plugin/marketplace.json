@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "willow",
+  "description": "WillowRyu's Claude Code skills & workflows",
+  "owner": {
+    "name": "WillowRyu",
+    "url": "https://github.com/WillowRyu"
+  },
+  "plugins": [
+    {
+      "name": "agent-handoff",
+      "description": "Strict 3-stage handoff workflow (plan → execute → verify) for coding agents.",
+      "category": "workflow",
+      "source": { "source": "github", "repo": "WillowRyu/agent-handoff" }
+    }
+  ]
+}
