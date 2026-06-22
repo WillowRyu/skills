@@ -1,0 +1,13 @@
+{
+  "name": "skill-name",
+  "version": "0.1.0",
+  "description": "One-line description of the skill.",
+  "author": {
+    "name": "WillowRyu",
+    "url": "https://github.com/WillowRyu"
+  },
+  "homepage": "https://github.com/WillowRyu/skills/tree/main/plugins/skill-name",
+  "repository": "https://github.com/WillowRyu/skills",
+  "license": "MIT",
+  "skills": ["./skills/skill-name"]
+}
