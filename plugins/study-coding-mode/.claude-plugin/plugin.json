@@ -1,6 +1,6 @@
 {
   "name": "study-coding-mode",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Learn-by-typing tutor mode: the AI explains the why and hands you one small step at a time to type yourself, verifies your code, and proactively teaches the architecture, patterns, and terms — as a persistent on/off mode. Junior/mid/senior teaching levels control how much jargon gets unpacked.",
   "keywords": [
     "study",
@@ -21,5 +21,7 @@
   "homepage": "https://github.com/WillowRyu/skills/tree/main/plugins/study-coding-mode",
   "repository": "https://github.com/WillowRyu/skills",
   "license": "MIT",
-  "skills": ["./skills/study-coding-mode"]
+  "skills": [
+    "./skills/study-coding-mode"
+  ]
 }

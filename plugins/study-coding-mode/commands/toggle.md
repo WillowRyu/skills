@@ -2,10 +2,12 @@
 description: Toggle study coding mode (no arg = flip on/off) — on | off | status | junior | mid | senior
 argument-hint: (empty = flip) | on | off | status | junior | mid | senior
 disable-model-invocation: true
-allowed-tools: Bash(mkdir:*), Bash(rm:*), Bash(test:*), Bash(printf:*), Bash(cat:*), Bash(echo:*)
+allowed-tools: Bash(mkdir:*), Bash(rm:*), Bash(test:*), Bash(printf:*), Bash(cat:*), Bash(echo:*), Bash(node:*)
 ---
 
 Toggle **study coding mode**. The marker file `.claude/study-coding-mode` drives a `UserPromptSubmit` hook that keeps the mode active every turn until it is turned off; the marker's **contents are the teaching level** — `junior` (default) | `mid` | `senior`. Act on `$ARGUMENTS`:
+
+This command performs the state change. When invoking the skill afterward, restore the state it just wrote; do not toggle again or reset the selected level. Keep the shell working directory at the session's original working directory.
 
 - **empty → flip.** Run `test -f .claude/study-coding-mode`.
   - Marker absent → turn **on** at the default level: `mkdir -p .claude && printf junior > .claude/study-coding-mode`. Then invoke the **study-coding-mode** skill and begin: confirm what we are building, propose a learning-ordered roadmap, and start step 1 — explain the *why*, then hand over the first small piece for the user to type themselves.

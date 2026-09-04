@@ -1,6 +1,6 @@
 ---
 name: study-coding-mode
-description: Use when the user wants to learn and understand while building — the architecture, patterns, terminology, and language — rather than just receive finished code. Triggers include "study coding mode" / "study mode", "teach me as we build", "I want to understand this not just get the code", "let me type it myself", a user who can't yet judge the AI's code and wants to learn it, or one who wants terms unpacked more simply ("I don't know these terms", "explain at a beginner level"). An explicit on/off mode (also via /study-coding-mode:toggle) with junior/mid/senior teaching levels.
+description: Use when the user explicitly requests study coding mode, learning by typing the code themselves, or "teach me as we build". Also use to toggle, stop, check, or change the junior/mid/senior level of this mode in Claude Code or Codex. Ordinary explanation requests alone do not activate it.
 ---
 
 # Study Coding Mode
@@ -16,23 +16,40 @@ A learn-by-doing tutor mode. The user writes the code in order to learn it; you 
 - Use when the user explicitly wants to learn while building (see the description triggers). It is an opt-in mode.
 - It is NOT the default. Outside this mode, build normally.
 
-## Activating & persisting the mode
+## Mode control — handle before tutoring
 
-When entering this mode (via `/study-coding-mode:toggle`, or when the user asks for study mode in their own words), create the marker — **its contents are the teaching level**, default `junior` (see Teaching level below):
+Claude Code uses `/study-coding-mode:toggle [action]`. Codex uses `$study-coding-mode:study-coding-mode [action]` for a plugin install, or `$study-coding-mode [action]` for a standalone skill install. The examples below abbreviate both as `$study-coding-mode`; apply the same control rules to either name. **Reading this skill or receiving its hook reminder is never itself a request to toggle or enable the mode.**
 
-```bash
-mkdir -p .claude && printf junior > .claude/study-coding-mode
-```
-
-A `UserPromptSubmit` hook re-asserts the mode every turn while this marker exists, so it survives context compaction during long features. When the user exits (`/study-coding-mode:toggle` again, or says e.g. "스터디 코딩 모드 종료"), remove it and return to normal mode:
+Use the bundled [mode controller](scripts/mode.js). Resolve `scripts/mode.js` relative to the actual directory of this `SKILL.md`, not the user's project or a hardcoded installation path. Run it with Node.js, keeping the shell working directory set to the session's original working directory (the same `cwd` the hook receives):
 
 ```bash
-rm -f .claude/study-coding-mode
+node "<absolute-skill-directory>/scripts/mode.js" status
 ```
+
+Replace the placeholder with the resolved skill directory. The controller returns JSON with `enabled` and `level`. First read `status`, then resolve the **user's intent**, using this table:
+
+| Request | Controller action | Effect |
+|---------|-------------------|--------|
+| Explicit bare `$study-coding-mode`, or an explicit toggle request | `toggle` | Off → on at junior; on → off |
+| `on`, or a natural-language request to learn by typing | `on` | Enable at junior only if off; preserve an existing level |
+| `off`, or "스터디 코딩 모드 종료" | `off` | Remove the marker and return to normal assistance |
+| `status` | `status` | Report state only; do not activate or begin a lesson |
+| `junior`, `mid`, `senior`, or a request to change the active mode's depth | the chosen level | Enable or update that level |
+| Skill loaded for context restoration or by the Claude toggle command after it changed state | `status` only | Restore the existing state without toggling or resetting its level |
+
+When no explicit supported control action is present, a skill mention accompanied by a task (e.g. `$study-coding-mode help me build a counter`) means `on`, not a bare toggle. An explicit control action takes precedence over accompanying task text (e.g. `off` followed by a coding request exits the mode). Interpret only supported actions; never interpolate arbitrary user text into a shell command. For an unrecognized control argument, explain the supported actions without changing state.
+
+After a control operation, report its result. If the result is off, or the request was only `status`, stop here; do not enter the teaching loop. If newly on, begin the loop below (ask what to build if the task is unknown). If already on, preserve progress and continue at the selected level. When only restoring context and the marker is absent, use normal assistance.
+
+## Persistence and installation
+
+Both hosts share `.claude/study-coding-mode` **in the session working directory**. The legacy path is intentional: existing Claude Code sessions keep working, and switching hosts in the same directory preserves the mode and level. The contents are `junior`, `mid`, or `senior`; empty or unknown legacy contents mean junior. Treat it as local session state, not a file to commit.
+
+The full plugin bundles a `UserPromptSubmit` hook that re-asserts the active mode on subsequent prompts, including after compaction. In Codex, this requires plugin hook support and the user's trust of the hook definition. A standalone skill install does **not** install this hook: controls still work, but automatic reminders are unavailable. Do not promise persistence through compaction without the enabled hook; explicitly invoke the skill with `on` to resume at the saved level. A bare invocation would toggle the mode off if its marker still exists.
 
 ## Teaching level (junior / mid / senior)
 
-How much prior knowledge to assume and how much to unpack jargon. Stored in the marker's contents and re-asserted every turn by the hook. **Default: `junior`.** When the user asks for a different depth (e.g. "주니어로", "더 쉽게 풀어줘", "이 정돈 아니까 압축해서", "시니어로"), change it by rewriting the marker — `printf mid > .claude/study-coding-mode` — then continue at the new level.
+How much prior knowledge to assume and how much to unpack jargon. Stored in the marker and re-asserted by the installed hook. **Default when first enabled: `junior`.** When the user asks for a different depth in this mode (e.g. "주니어로", "더 쉽게 풀어줘", "이 정돈 아니까 압축해서", "시니어로"), run the controller with the chosen level and continue. Re-reading this skill must never reset an existing level.
 
 | Level | Assume | How you explain |
 |-------|--------|-----------------|

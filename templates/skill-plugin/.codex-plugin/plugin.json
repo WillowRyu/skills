@@ -1,0 +1,27 @@
+{
+  "name": "skill-name",
+  "version": "0.1.0",
+  "description": "One-line description of the skill.",
+  "author": {
+    "name": "WillowRyu",
+    "url": "https://github.com/WillowRyu"
+  },
+  "homepage": "https://github.com/WillowRyu/skills/tree/main/plugins/skill-name",
+  "repository": "https://github.com/WillowRyu/skills",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Skill Name",
+    "shortDescription": "A reusable coding workflow",
+    "longDescription": "A reusable skill for Claude Code and Codex.",
+    "developerName": "WillowRyu",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read"
+    ],
+    "websiteURL": "https://github.com/WillowRyu/skills/tree/main/plugins/skill-name",
+    "defaultPrompt": [
+      "Use this skill to help with my task."
+    ]
+  }
+}

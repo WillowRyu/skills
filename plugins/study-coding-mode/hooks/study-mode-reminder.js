@@ -1,12 +1,11 @@
 #!/usr/bin/env node
-// UserPromptSubmit hook for study-coding-mode.
+// UserPromptSubmit hook for study-coding-mode in Claude Code and Codex.
 // While the marker .claude/study-coding-mode exists in the project, re-inject a short
 // reminder every turn so the mode survives context compaction. Silent (exit 0) when off.
 // The marker's CONTENTS select the teaching level (junior | mid | senior; default junior).
 // Reads the hook payload from stdin; uses its `cwd` to locate the project-local marker.
 
-const fs = require('fs');
-const path = require('path');
+const { readState } = require('../skills/study-coding-mode/scripts/mode.js');
 
 // Teaching levels — how much prior knowledge to assume / how much to unpack jargon.
 const LEVEL_GUIDANCE = {
@@ -15,27 +14,14 @@ const LEVEL_GUIDANCE = {
   senior: 'TEACHING LEVEL = SENIOR. Assume strong general and domain familiarity: use precise terminology freely and flag only genuinely obscure terms. Center trade-offs, edge cases, and alternatives. Larger steps, faster pace.'
 };
 
-// Map whatever word is in the marker (incl. natural-language synonyms) to a canonical level.
-const LEVEL_ALIASES = {
-  junior: 'junior', beginner: 'junior', easy: 'junior', novice: 'junior',
-  mid: 'mid', middle: 'mid', intermediate: 'mid', normal: 'mid',
-  senior: 'senior', advanced: 'senior', expert: 'senior', hard: 'senior'
-};
-
 let input = '';
 process.stdin.on('data', (chunk) => { input += chunk; });
 process.stdin.on('end', () => {
   try {
     const payload = JSON.parse(input || '{}');
     const cwd = typeof payload.cwd === 'string' && payload.cwd ? payload.cwd : process.cwd();
-    const marker = path.join(cwd, '.claude', 'study-coding-mode');
-    if (!fs.existsSync(marker)) return; // mode off → stay silent
-
-    let level = 'junior';
-    try {
-      const raw = fs.readFileSync(marker, 'utf8').trim().toLowerCase();
-      if (LEVEL_ALIASES[raw]) level = LEVEL_ALIASES[raw];
-    } catch { /* unreadable marker → default level */ }
+    const { enabled, level } = readState(cwd);
+    if (!enabled) return; // mode off → stay silent
 
     process.stdout.write(JSON.stringify({
       hookSpecificOutput: {
@@ -49,7 +35,8 @@ process.stdin.on('end', () => {
           LEVEL_GUIDANCE[level],
           'The user can change level anytime ("주니어/미들/시니어로", "더 쉽게 풀어줘", "압축해서") — when they do, rewrite .claude/study-coding-mode with the new level word (junior|mid|senior).',
           'If the user is impatient, offer to condense or to exit the mode — do not silently take over the code.',
-          'Exit when the user runs `/study-coding-mode:toggle` again (or says exit): remove .claude/study-coding-mode.'
+          'Loading this reminder or the skill is not a toggle request; preserve the current level.',
+          'Honor explicit off, toggle, status, and level requests before tutoring. Exit when the user asks to leave study mode: remove .claude/study-coding-mode.'
         ].join(' ')
       }
     }));
