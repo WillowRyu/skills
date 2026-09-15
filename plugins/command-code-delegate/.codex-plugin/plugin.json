@@ -1,7 +1,7 @@
 {
   "name": "command-code-delegate",
-  "version": "0.2.0",
-  "description": "Delegate bounded, well-specified coding to a configured Command Code CLI worker: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning and independent review.",
+  "version": "0.3.0",
+  "description": "Delegate code implementation, test authoring/execution, and build/lint/type checks by default — from a scoped change to a full feature, not just simple or mechanical edits — to a configured Command Code CLI worker: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning, work breakdown, and independent final review.",
   "keywords": [
     "delegate",
     "delegation",
@@ -24,8 +24,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Command Code Delegate",
-    "shortDescription": "Delegate bounded coding to a configured Command Code worker",
-    "longDescription": "Delegate bounded, well-specified coding to a configured Command Code CLI worker: the worker implements, self-verifies, fixes, and re-verifies, then hands the final diff back to the main model for planning and independent review. Suited to simple implementations, repetitive edits, and mechanical transformations under a clearly scoped set of allowed changes.",
+    "shortDescription": "Delegate implementation and tests to a configured Command Code worker",
+    "longDescription": "Delegate code implementation, test authoring/execution, and build/lint/type checks by default to a configured Command Code CLI worker: the worker implements, self-verifies, fixes, and re-verifies, then hands the final diff back to the main model for requirements, planning, work breakdown, and independent final review. Covers full features and complex work split into scoped worker tasks, not just simple implementations or mechanical edits; all follow-up fixes and retests stay with the worker, and the main model reserves itself for design decisions and final acceptance.",
     "developerName": "WillowRyu",
     "category": "Developer Tools",
     "capabilities": [
@@ -34,7 +34,7 @@
     ],
     "websiteURL": "https://github.com/WillowRyu/skills/tree/main/plugins/command-code-delegate",
     "defaultPrompt": [
-      "Delegate this bounded task to Command Code and verify the result.",
+      "Delegate this implementation and its tests to Command Code, then verify the result.",
       "Review the delegated worker's final diff before accepting it."
     ]
   }

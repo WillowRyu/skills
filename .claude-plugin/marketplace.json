@@ -21,7 +21,7 @@
     },
     {
       "name": "command-code-delegate",
-      "description": "Delegate bounded, well-specified coding to a configured Command Code CLI worker — the worker implements, self-verifies, fixes, and re-verifies, then hands the final diff to the main model for planning and independent review.",
+      "description": "Delegate code implementation, test authoring/execution, and build/lint/type checks by default to a configured Command Code CLI worker — the worker implements, self-verifies, fixes, and re-verifies, then hands the final diff to the main model for planning, work breakdown, and independent final review.",
       "category": "development",
       "source": "./plugins/command-code-delegate"
     }
