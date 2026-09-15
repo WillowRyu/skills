@@ -30,7 +30,7 @@ Review and trust the plugin's hooks when Codex prompts, then start a new task. H
 
 - **Update later:** `codex plugin marketplace upgrade willow`, then `codex plugin add study-coding-mode@willow` and start a new task. Review updated hooks if prompted.
 - **Develop from a local checkout:** use `codex plugin marketplace add /absolute/path/to/skills` instead of the GitHub source, then install with the same command. For later local edits, ask Codex's `$plugin-creator` to update this plugin from the local marketplace; its update flow refreshes the version cachebuster and reinstalls the package. Start a new task afterward.
-- The Codex marketplace currently contains `study-coding-mode`. Install `agent-handoff` through its existing universal skill installer below; its upstream repository does not yet provide a Codex plugin manifest.
+- The Codex marketplace currently contains `study-coding-mode` and `command-code-delegate`. Install `agent-handoff` through its existing universal skill installer below; its upstream repository does not yet provide a Codex plugin manifest.
 
 ## Plugins
 
@@ -96,6 +96,24 @@ $study-coding-mode off              # exit
 …or say *"study coding mode"* / *"teach me as we build, I'll type it"*. Natural-language activation preserves an existing level. Pick a **teaching level** — `junior` (default; unpacks terms with plain definitions and analogies), `mid`, or `senior` — at the start or anytime by asking (*"explain this more simply"*, *"switch to senior"*). Ordinary explanation requests do not activate the mode.
 
 The full plugin's `UserPromptSubmit` hook re-asserts the active mode on subsequent prompts, including after context compaction, until you turn it off. Both hosts intentionally share the legacy `.claude/study-coding-mode` marker in the session working directory: switching hosts in that directory preserves the mode and level. Keep this local state out of commits. Installing the complete skill directory (including `scripts/`) on its own provides the controls but does **not** install the reminder hook; use `$study-coding-mode on` to resume at the saved level after context loss. A bare invocation would toggle an active mode off. Copying only `SKILL.md` is insufficient for the controls.
+
+### `command-code-delegate`
+
+Claude Code:
+
+```
+/plugin install command-code-delegate@willow
+```
+
+Codex: after adding the marketplace above, run `codex plugin add command-code-delegate@willow`, then type `$` and select the namespaced skill `command-code-delegate:command-code-delegate` (standalone installs use the unprefixed name).
+
+Delegates **bounded, well-specified coding** — simple implementations, repetitive edits, mechanical transformations — to a **Command Code CLI worker** (`cmd -p`) running **DeepSeek**, while the **main model keeps planning, design decisions, and final review**. The worker implements, reviews its own diff, runs the relevant checks, fixes defects, re-runs them, and only then hands back a final result; the main model independently verifies that diff instead of accepting the worker's claims.
+
+- **Role split:** the main model fixes the purpose, requirements, allowed change scope, acceptance criteria, and verification method; DeepSeek does the implementation; the main model then reviews the final diff. Do not let the worker self-approve and stop there.
+- **Execution settings:** the worker runs non-interactively with high effort and YOLO mode — `cmd -p --model deepseek/deepseek-v4.1-flash --effort high --yolo --output-format json` plus an appropriate `--max-turns`. YOLO is the requested default and does not re-ask inside the delegated scope; it grants no permission for unrelated changes or external publishing.
+- **Making delegation your default:** a single delegation does not change how the agent behaves on later tasks. Persistent default delegation requires you to instruct it separately (for example, *"Delegate bounded implementation to Command Code by default and reserve yourself for planning and review"*).
+
+**Running the worker on another PC:** the machine that executes the delegations needs its own prerequisites, none of which this skill installs — the Command Code CLI **`cmd`** installed and on `PATH`, **Node.js 22 or newer** (if a directory selects Node 20, prefix that call's `PATH` with the Node 22+ bin directory), and an authenticated Command Code account with access to the chosen model (sign in with `cmd login`). Installing this skill/plugin does **not** install the CLI, perform authentication, or copy any personal global `AGENTS.md` instructions; those live on that machine and must be set up there separately. Install the CLI through its official distribution and confirm `cmd --version` before delegating.
 
 ## Adding a new skill
 

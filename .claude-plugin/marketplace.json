@@ -18,6 +18,12 @@
       "description": "Learn-by-typing tutor mode — explains the why, hands you one step at a time to type yourself, verifies it, and teaches the architecture/patterns/terms as a persistent on/off mode. Junior/mid/senior teaching levels.",
       "category": "education",
       "source": "./plugins/study-coding-mode"
+    },
+    {
+      "name": "command-code-delegate",
+      "description": "Delegate bounded, well-specified coding to a Command Code CLI worker running DeepSeek — the worker implements, self-verifies, fixes, and re-verifies, then hands the final diff to the main model for planning and independent review.",
+      "category": "development",
+      "source": "./plugins/command-code-delegate"
     }
   ]
 }

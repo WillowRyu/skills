@@ -1,0 +1,27 @@
+{
+  "name": "command-code-delegate",
+  "version": "0.1.0",
+  "description": "Delegate bounded, well-specified coding to a Command Code CLI worker running DeepSeek: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning and independent review.",
+  "keywords": [
+    "delegate",
+    "delegation",
+    "command-code",
+    "cmd",
+    "deepseek",
+    "worker",
+    "orchestration",
+    "handoff",
+    "verification",
+    "parallel"
+  ],
+  "author": {
+    "name": "WillowRyu",
+    "url": "https://github.com/WillowRyu"
+  },
+  "homepage": "https://github.com/WillowRyu/skills/tree/main/plugins/command-code-delegate",
+  "repository": "https://github.com/WillowRyu/skills",
+  "license": "MIT",
+  "skills": [
+    "./skills/command-code-delegate"
+  ]
+}

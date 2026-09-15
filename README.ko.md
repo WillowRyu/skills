@@ -30,7 +30,7 @@ Codex가 플러그인 훅의 신뢰 여부를 물으면 내용을 검토하고 �
 
 - **업데이트:** `codex plugin marketplace upgrade willow` 실행 후 `codex plugin add study-coding-mode@willow`를 다시 실행하고 새 작업을 시작하세요. 훅이 변경되어 확인을 요청하면 다시 검토하세요.
 - **로컬 체크아웃으로 개발:** GitHub 주소 대신 `codex plugin marketplace add /absolute/path/to/skills`를 실행한 뒤 같은 설치 명령을 사용하세요. 이후 로컬 수정은 Codex의 `$plugin-creator`에 이 로컬 마켓플레이스의 플러그인 업데이트를 요청하세요. 업데이트 절차가 버전의 캐시 식별자를 갱신하고 패키지를 재설치합니다. 이후 새 작업을 시작하세요.
-- 현재 Codex 마켓플레이스에는 `study-coding-mode`가 포함됩니다. `agent-handoff`는 아래의 기존 범용 스킬 설치 경로를 사용하세요. 원본 저장소에는 아직 Codex 플러그인 manifest가 없습니다.
+- 현재 Codex 마켓플레이스에는 `study-coding-mode`와 `command-code-delegate`가 포함됩니다. `agent-handoff`는 아래의 기존 범용 스킬 설치 경로를 사용하세요. 원본 저장소에는 아직 Codex 플러그인 manifest가 없습니다.
 
 ## 플러그인
 
@@ -96,6 +96,24 @@ $study-coding-mode off              # 종료
 …또는 *"스터디 코딩 모드"* / *"학습하면서 만들자, 내가 칠게"*처럼 말로 해도 됩니다. 말로 모드를 켜면 기존 레벨을 유지합니다. **티칭 레벨**은 `junior`(기본; 용어를 쉬운 정의와 비유로 설명), `mid`, `senior` 중 선택하고, 도중에도 *"더 쉽게 설명해줘"*, *"시니어로 바꿔줘"*처럼 변경할 수 있습니다. 일반적인 설명 요청만으로 모드를 켜지는 않습니다.
 
 전체 플러그인의 `UserPromptSubmit` 훅이 이후 프롬프트마다 활성 모드를 다시 주입하므로, 컨텍스트 요약 이후에도 끄기 전까지 이어집니다. 두 도구는 기존 호환성을 위해 **세션 작업 디렉터리**의 `.claude/study-coding-mode` 파일을 함께 사용합니다. 같은 디렉터리에서 도구를 바꿔도 모드와 레벨이 유지됩니다. 이 로컬 상태 파일은 커밋하지 마세요. `scripts/`를 포함한 스킬 디렉터리를 단독 설치하면 모드 제어는 가능하지만 알림 훅은 설치되지 않습니다. 컨텍스트가 사라지면 `$study-coding-mode on`으로 저장된 레벨에서 재개하세요. 인자 없이 호출하면 켜져 있던 모드를 끄게 됩니다. `SKILL.md` 파일만 복사하면 제어 스크립트가 빠지므로 정상 작동하지 않습니다.
+
+### `command-code-delegate`
+
+Claude Code:
+
+```
+/plugin install command-code-delegate@willow
+```
+
+Codex: 위에서 마켓플레이스를 추가한 뒤 `codex plugin add command-code-delegate@willow`로 설치하고, `$`를 입력해 네임스페이스가 붙은 스킬 `command-code-delegate:command-code-delegate`를 선택하세요 (단독 설치 시에는 접두사 없는 이름을 사용합니다).
+
+**범위가 명확한 코딩** — 단순 구현, 반복 수정, 기계적 변환 — 을 **DeepSeek**를 돌리는 **Command Code CLI 작업자**(`cmd -p`)에게 위임하고, **메인 모델은 기획·설계 판단·최종 리뷰를 유지**합니다. 작업자는 구현 → 자체 diff 검토 → 관련 검증 실행 → 결함 수정 → 재검증을 마친 뒤에야 최종 결과를 인계하고, 메인 모델은 작업자의 주장을 그대로 받아들이지 않고 그 diff를 독립 검증합니다.
+
+- **역할 분담:** 메인 모델이 목적·요구사항·수정 허용 범위·완료 기준·검증 방법을 정하고, DeepSeek이 구현하며, 다시 메인 모델이 최종 diff를 리뷰합니다. 작업자의 자체 검증만으로 끝내지 마세요.
+- **실행 설정:** 작업자는 high effort·YOLO 모드로 비대화형 실행합니다 — `cmd -p --model deepseek/deepseek-v4.1-flash --effort high --yolo --output-format json`에 작업에 맞는 `--max-turns`를 붙입니다. YOLO는 요청된 기본 방식이며 위임 범위 안에서는 다시 묻지 않지만, 관련 없는 변경이나 외부 게시 권한을 추가하지는 않습니다.
+- **위임을 기본값으로 만들기:** 한 번의 위임이 이후 작업의 에이전트 동작을 바꾸지는 않습니다. 지속적인 기본 위임은 사용자가 별도로 지시해야 합니다 (예: *"범위가 명확한 구현은 기본적으로 Command Code에 위임하고, 너는 기획과 리뷰에 집중해"*).
+
+**다른 PC에서 작업자를 실행할 때:** 위임을 실제로 실행하는 머신에는 이 스킬이 설치하지 않는 자체 준비물이 필요합니다 — `PATH`에 있는 Command Code CLI **`cmd`**, **Node.js 22 이상**(디렉터리별 설정이 Node 20을 선택하면 해당 호출의 `PATH` 앞에 Node 22 이상 bin 디렉터리를 지정), 그리고 선택한 모델에 접근할 수 있는 인증된 Command Code 계정(`cmd login`으로 로그인)입니다. 이 스킬/플러그인을 설치해도 CLI 설치, 인증, 개인 전역 `AGENTS.md` 지침 복사는 이뤄지지 않습니다. 그것들은 해당 머신에 있으며 거기서 따로 설정해야 합니다. CLI는 공식 배포 경로로 설치하고 위임 전에 `cmd --version`을 확인하세요.
 
 ## 새 스킬 추가하기
 
