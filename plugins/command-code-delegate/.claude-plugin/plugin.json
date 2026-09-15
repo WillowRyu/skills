@@ -1,13 +1,13 @@
 {
   "name": "command-code-delegate",
-  "version": "0.1.0",
-  "description": "Delegate bounded, well-specified coding to a Command Code CLI worker running DeepSeek: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning and independent review.",
+  "version": "0.2.0",
+  "description": "Delegate bounded, well-specified coding to a configured Command Code CLI worker: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning and independent review.",
   "keywords": [
     "delegate",
     "delegation",
     "command-code",
     "cmd",
-    "deepseek",
+    "configurable",
     "worker",
     "orchestration",
     "handoff",

@@ -1,13 +1,13 @@
 {
   "name": "command-code-delegate",
-  "version": "0.1.0",
-  "description": "Delegate bounded, well-specified coding to a Command Code CLI worker running DeepSeek: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning and independent review.",
+  "version": "0.2.0",
+  "description": "Delegate bounded, well-specified coding to a configured Command Code CLI worker: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning and independent review.",
   "keywords": [
     "delegate",
     "delegation",
     "command-code",
     "cmd",
-    "deepseek",
+    "configurable",
     "worker",
     "orchestration",
     "handoff",
@@ -24,8 +24,8 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Command Code Delegate",
-    "shortDescription": "Delegate bounded coding to a DeepSeek worker",
-    "longDescription": "Delegate bounded, well-specified coding to a Command Code CLI worker running DeepSeek: the worker implements, self-verifies, fixes, and re-verifies, then hands the final diff back to the main model for planning and independent review. Suited to simple implementations, repetitive edits, and mechanical transformations under a clearly scoped set of allowed changes.",
+    "shortDescription": "Delegate bounded coding to a configured Command Code worker",
+    "longDescription": "Delegate bounded, well-specified coding to a configured Command Code CLI worker: the worker implements, self-verifies, fixes, and re-verifies, then hands the final diff back to the main model for planning and independent review. Suited to simple implementations, repetitive edits, and mechanical transformations under a clearly scoped set of allowed changes.",
     "developerName": "WillowRyu",
     "category": "Developer Tools",
     "capabilities": [
