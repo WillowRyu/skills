@@ -1,7 +1,7 @@
 {
   "name": "command-code-delegate",
-  "version": "0.4.0",
-  "description": "Delegate code implementation, test authoring/execution, and build/lint/type checks by default — from a scoped change to a full feature, not just simple or mechanical edits — to a configured Command Code CLI worker: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning, work breakdown, and independent final review.",
+  "version": "0.5.0",
+  "description": "Delegate code implementation, test authoring/execution, and build/lint/type checks by default to a configured Command Code CLI worker: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning, work breakdown, and independent final review. Only clear micro-edits under all listed criteria are handled directly by the main model; anything uncertain is delegated.",
   "keywords": [
     "delegate",
     "delegation",
@@ -25,7 +25,7 @@
   "interface": {
     "displayName": "Command Code Delegate",
     "shortDescription": "Delegate implementation and tests to a configured Command Code worker",
-    "longDescription": "Delegate code implementation, test authoring/execution, and build/lint/type checks by default to a configured Command Code CLI worker: the worker implements, self-verifies, fixes, and re-verifies, then hands the final diff back to the main model for requirements, planning, work breakdown, and independent final review. Covers full features and complex work split into scoped worker tasks, not just simple implementations or mechanical edits; all follow-up fixes and retests stay with the worker, and the main model reserves itself for design decisions and final acceptance.",
+    "longDescription": "Delegate code implementation, test authoring/execution, and build/lint/type checks by default to a configured Command Code CLI worker: the worker implements, self-verifies, fixes, and re-verifies, then hands the final diff back to the main model for requirements, planning, work breakdown, and independent final review. Covers full features and complex work split into scoped worker tasks; only clear micro-edits under all listed criteria are handled directly by the main model, anything uncertain is delegated, and other follow-up fixes and retests stay with the worker. The main model reserves itself for design decisions and final acceptance.",
     "developerName": "WillowRyu",
     "category": "Developer Tools",
     "capabilities": [

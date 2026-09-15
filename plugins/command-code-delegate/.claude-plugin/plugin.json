@@ -1,7 +1,7 @@
 {
   "name": "command-code-delegate",
-  "version": "0.4.0",
-  "description": "Delegate code implementation, test authoring/execution, and build/lint/type checks by default — from a scoped change to a full feature, not just simple or mechanical edits — to a configured Command Code CLI worker: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning, work breakdown, and independent final review.",
+  "version": "0.5.0",
+  "description": "Delegate code implementation, test authoring/execution, and build/lint/type checks by default to a configured Command Code CLI worker: implement, self-verify, fix, and re-verify, then hand the final diff back to the main model for planning, work breakdown, and independent final review. Only clear micro-edits under all listed criteria are handled directly by the main model; anything uncertain is delegated.",
   "keywords": [
     "delegate",
     "delegation",
